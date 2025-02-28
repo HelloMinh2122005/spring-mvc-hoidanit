@@ -3,7 +3,10 @@ package com.example.demo.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.entities.UserEntity;
 import com.example.demo.services.UserService;
 
 // @RestController
@@ -39,8 +42,14 @@ public class UserController {
 
     @GetMapping("/admin/user")
     public String getAdminUserPage(Model model) {
-        model.addAttribute("message", "Hello Admin User");
+        model.addAttribute("newUser", new UserEntity());
         return "admin/user/create";
+    }
+
+    @PostMapping("/admin/user/create")
+    public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") UserEntity newUser) {
+        model.addAttribute("message", "Create User Success" + newUser);
+        return "hello";
     }
 
 }
