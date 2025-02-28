@@ -36,4 +36,11 @@ public class UserController {
         model.addAttribute("message", "Hello User");
         return "hello";
     }
+
+    @GetMapping("/admin/user")
+    public String getAdminUserPage(Model model) {
+        model.addAttribute("message", "Hello Admin User");
+        return "admin/user/create";
+    }
+
 }
