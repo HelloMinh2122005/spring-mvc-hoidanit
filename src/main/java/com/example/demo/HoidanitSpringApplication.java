@@ -18,4 +18,14 @@ public class HoidanitSpringApplication {
 	public String Hello() {
 		return "Hello ";
 	}
+
+	@GetMapping("/user")
+	public String User() {
+		return "Hello User";
+	}
+
+	@GetMapping("/admin")
+	public String Admin() {
+		return "Hello Admin";
+	}
 }
