@@ -3,3 +3,12 @@ server:
 spring:
     application:
         name: hoidanit_spring
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+    datasource:
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/laptopshop
+        username: root
+        password: minh@2005
+        driver-class-name: com.mysql.cj.jdbc.Driver
