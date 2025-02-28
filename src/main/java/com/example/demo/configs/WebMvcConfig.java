@@ -2,6 +2,7 @@ package com.example.demo.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -14,22 +15,22 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
 
-  @Bean
-  public ViewResolver viewResolver() {
-    final InternalResourceViewResolver bean = new InternalResourceViewResolver();
-    bean.setViewClass(JstlView.class);
-    bean.setPrefix("/WEB-INF/views/");
-    bean.setSuffix(".jsp");
-    return bean;
-  }
+    @Bean
+    public ViewResolver viewResolver() {
+        final InternalResourceViewResolver bean = new InternalResourceViewResolver();
+        bean.setViewClass(JstlView.class);
+        bean.setPrefix("/WEB-INF/views/");
+        bean.setSuffix(".jsp");
+        return bean;
+    }
 
-  @Override
-  public void configureViewResolvers(ViewResolverRegistry registry) {
-    registry.viewResolver(viewResolver());
-  }
+    @Override
+    public void configureViewResolvers(@NonNull ViewResolverRegistry registry) {
+        registry.viewResolver(viewResolver());
+    }
 
-  @Override
-  public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
-  }
+    @Override
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+    }
 }
