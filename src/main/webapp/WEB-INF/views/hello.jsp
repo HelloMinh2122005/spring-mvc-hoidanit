@@ -8,6 +8,10 @@
 
 <body>
     hello from jsp
+
+    <h1>
+        ${message}
+    </h1>
 </body>
 
 </html>

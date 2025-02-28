@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.services.UserService;
@@ -31,9 +32,8 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String getHomePage() {
-        String test = this.userService.handleHello();
-        System.out.println(test);
+    public String getHomePage(Model model) {
+        model.addAttribute("message", "Hello User");
         return "hello";
     }
 }
