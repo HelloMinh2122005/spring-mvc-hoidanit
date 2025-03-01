@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.domain.User;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
 
 // @RestController
@@ -29,9 +30,14 @@ import com.example.demo.services.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(
+        UserService userService,
+        UserRepository userRepository
+    ) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/home")
@@ -49,6 +55,7 @@ public class UserController {
     @PostMapping("/admin/user/create")
     public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser) {
         model.addAttribute("message", "Create User Success" + newUser);
+        this.userService.handleHello(newUser);
         return "hello";
     }
 
