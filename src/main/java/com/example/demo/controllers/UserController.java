@@ -56,13 +56,13 @@ public class UserController {
     public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser) {
         model.addAttribute("message", "Create User Success" + newUser);
         this.userService.handleHello(newUser);
-        return "hello";
+        return getUserTable(model);
     }
 
-    @GetMapping("/admin/user/list")
-    public String getAdminUserListPage(Model model) {
-        model.addAttribute("message", this.userService.getAllUsers());
-        return "hello";
+    @GetMapping("/admin/user/user-table")
+    public String getUserTable(Model model) {
+        model.addAttribute("users", this.userService.getAllUsers());
+        return "admin/user/user-table";
     }
 
 }
