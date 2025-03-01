@@ -59,4 +59,10 @@ public class UserController {
         return "hello";
     }
 
+    @GetMapping("/admin/user/list")
+    public String getAdminUserListPage(Model model) {
+        model.addAttribute("message", this.userService.getAllUsers());
+        return "hello";
+    }
+
 }

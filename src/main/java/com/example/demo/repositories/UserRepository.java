@@ -7,5 +7,6 @@ import com.example.demo.domain.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-    User save(User minh);
+
+    User findByEmail(String email);
 }
