@@ -29,4 +29,14 @@ public class UserService {
         userRepository.delete(user);
         return "Delete User Success";
     }
+
+    public String updateUser(User user) {
+        userRepository.save(user);
+        return "Update User Success";
+    }
+
+    public String deleteUserById(long id) {
+        userRepository.deleteById(id);
+        return "Delete User Success";
+    }
 }

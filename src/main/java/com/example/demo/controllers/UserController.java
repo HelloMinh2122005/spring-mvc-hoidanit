@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.domain.User;
@@ -63,6 +64,31 @@ public class UserController {
     public String getUserTable(Model model) {
         model.addAttribute("users", this.userService.getAllUsers());
         return "admin/user/user-table";
+    }
+
+    @GetMapping("/admin/user/detail/{id}")
+    public String getUserDetailPage(Model model, @PathVariable("id") long id) {
+        model.addAttribute("user", this.userRepository.findById(id).get());
+        return "admin/user/detail";
+    }
+
+    @GetMapping("/admin/user/edit/{id}")
+    public String getEditUserPage(Model model, @PathVariable("id") long id) {
+        model.addAttribute("user", this.userRepository.findById(id).get());
+        return "admin/user/update";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String postEditUserPage(Model model, @ModelAttribute("user") User user) {
+        model.addAttribute("message", "Update User Success" + user);
+        this.userService.updateUser(user);
+        return "redirect:/admin/user/user-table";
+    }
+
+    @GetMapping("/admin/user/delete/{id}")
+    public String deleteUser(@PathVariable("id") long id) {
+        this.userService.deleteUserById(id);
+        return "redirect:/admin/user/user-table";
     }
 
 }
