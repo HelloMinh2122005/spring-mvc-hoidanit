@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.demo.entities.UserEntity;
+import com.example.demo.domain.User;
 import com.example.demo.services.UserService;
 
 // @RestController
@@ -42,12 +42,12 @@ public class UserController {
 
     @GetMapping("/admin/user")
     public String getAdminUserPage(Model model) {
-        model.addAttribute("newUser", new UserEntity());
+        model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
     @PostMapping("/admin/user/create")
-    public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") UserEntity newUser) {
+    public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser) {
         model.addAttribute("message", "Create User Success" + newUser);
         return "hello";
     }
