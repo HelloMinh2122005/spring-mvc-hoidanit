@@ -56,7 +56,7 @@ public class UserController {
     public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser) {
         model.addAttribute("message", "Create User Success" + newUser);
         this.userService.handleHello(newUser);
-        return getUserTable(model);
+        return "redirect:/admin/user/user-table";
     }
 
     @GetMapping("/admin/user/user-table")
