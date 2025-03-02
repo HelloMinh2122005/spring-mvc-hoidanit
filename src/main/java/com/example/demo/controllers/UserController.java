@@ -90,5 +90,4 @@ public class UserController {
         this.userService.deleteUserById(id);
         return "redirect:/admin/user/user-table";
     }
-
 }
