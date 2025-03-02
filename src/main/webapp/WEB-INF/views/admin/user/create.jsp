@@ -43,7 +43,7 @@
                                         <div class="col-md-6 col-12 offset-md-3">
                                             <h1>Create User</h1>
                                             <form:form action="/admin/user/create" method="post"
-                                                modelAttribute="newUser">
+                                                modelAttribute="newUser" enctype="multipart/form-data">
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
@@ -88,19 +88,20 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
-                                                            <label for="phone" class="form-label">Role</label>
-                                                            <select class="form-select"
-                                                                aria-label="Default select example">
-                                                                <option value="admin">Admin</option>
-                                                                <option value="user">User</option>
-                                                            </select>
+                                                            <label for="role" class="form-label">Role</label>
+                                                            <form:select class="form-select"
+                                                                aria-label="Default select example" path="role.name">
+                                                                <form:option value="ADMIN">Admin</form:option>
+                                                                <form:option value="USER">User</form:option>
+                                                            </form:select>
                                                         </div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="mb-3">
                                                             <label for="formFile" class="form-label">Avatar</label>
                                                             <input class="form-control" type="file" id="avatarFile"
-                                                                accept=".png, .jpg, .jpeg" path="avatarFile" />
+                                                                accept=".png, .jpg, .jpeg" path="avatarFile"
+                                                                name="dinhminhFile" />
                                                         </div>
                                                     </div>
                                                 </div>

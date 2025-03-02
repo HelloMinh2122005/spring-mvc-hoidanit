@@ -1,15 +1,23 @@
 package com.example.demo.controllers;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.domain.User;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
+
+import jakarta.servlet.ServletContext;
 
 // @RestController
 // public class UserController {
@@ -31,14 +39,14 @@ import com.example.demo.services.UserService;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final ServletContext servletContext;
 
     public UserController(
         UserService userService,
-        UserRepository userRepository
+        ServletContext servletContext
     ) {
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.servletContext = servletContext;
     }
 
     @GetMapping("/home")
@@ -54,9 +62,32 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/create")
-    public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser) {
+    public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("dinhminhFile") MultipartFile file) {
         model.addAttribute("message", "Create User Success" + newUser);
-        this.userService.handleHello(newUser);
+        // this.userService.handleHello(newUser);
+        System.out.println(newUser.getRole());
+        System.out.println(file.getOriginalFilename());
+
+        try {
+            byte[] bytes = file.getBytes();
+            String rootPath = this.servletContext.getRealPath("/resources/images/");
+
+            File dir = new File(rootPath + File.separator + "avatars");
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath() + File.separator + 
+                System.currentTimeMillis() + "_" + file.getOriginalFilename());
+
+            BufferedOutputStream stream;
+            stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+        } catch (IOException ex) {
+            return "redirect:/admin/user";
+        }
+
         return "redirect:/admin/user/user-table";
     }
 
@@ -68,13 +99,13 @@ public class UserController {
 
     @GetMapping("/admin/user/detail/{id}")
     public String getUserDetailPage(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", this.userRepository.findById(id).get());
+        model.addAttribute("user", this.userService.findById(id));
         return "admin/user/detail";
     }
 
     @GetMapping("/admin/user/edit/{id}")
     public String getEditUserPage(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", this.userRepository.findById(id).get());
+        model.addAttribute("user", this.userService.findById(id));
         return "admin/user/update";
     }
 

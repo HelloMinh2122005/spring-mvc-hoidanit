@@ -20,6 +20,10 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
+    public User findById(long id) {
+        return userRepository.findById(id).get();
+    }
+
     public String handleHello(User user) {
         return userRepository.save(user).toString();
     }
