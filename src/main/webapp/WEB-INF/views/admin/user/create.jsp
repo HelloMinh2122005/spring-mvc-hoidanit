@@ -13,6 +13,18 @@
                 <title>Create user</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+                <script>
+                    $(document).ready(() => {
+                        const avatarFile = $("#avatarFile");
+                        avatarFile.change(function (e) {
+                            const imgURL = URL.createObjectURL(e.target.files[0]);
+                            $("#avatarPreview").attr("src", imgURL);
+                            $("#avatarPreview").css({ "display": "block" });
+                        });
+                    });
+                </script>
             </head>
 
             <body class="sb-nav-fixed">
@@ -22,9 +34,9 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Dashboard</h1>
+                                <h1 class="mt-4">User</h1>
                                 <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item active">Dashboard</li>
+                                    <li class="breadcrumb-item active">User</li>
                                 </ol>
                                 <div class="container mt-5 vh-100">
                                     <div class="row">
@@ -32,31 +44,72 @@
                                             <h1>Create User</h1>
                                             <form:form action="/admin/user/create" method="post"
                                                 modelAttribute="newUser">
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <form:input type="email" class="form-control" id="email"
-                                                        path="email" />
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <form:input type="email" class="form-control" id="email"
+                                                                path="email" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <label for="password" class="form-label">Password</label>
+                                                            <form:input type="password" class="form-control"
+                                                                id="password" path="password" />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="password" class="form-label">Password</label>
-                                                    <form:input type="password" class="form-control" id="password"
-                                                        path="password" />
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <label for="fullName" class="form-label">Full name</label>
+                                                            <form:input type="text" class="form-control" id="fullName"
+                                                                path="fullName" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <label for="phone" class="form-label">Phone</label>
+                                                            <form:input type="text" class="form-control" id="phone"
+                                                                path="phone" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="address" class="form-label">Address</label>
+                                                        <form:input type="text" class="form-control" id="address"
+                                                            path="address" />
+                                                    </div>
+
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="fullName" class="form-label">Full name</label>
-                                                    <form:input type="text" class="form-control" id="fullName"
-                                                        path="fullName" />
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <label for="phone" class="form-label">Role</label>
+                                                            <select class="form-select"
+                                                                aria-label="Default select example">
+                                                                <option value="admin">Admin</option>
+                                                                <option value="user">User</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3">
+                                                            <label for="formFile" class="form-label">Avatar</label>
+                                                            <input class="form-control" type="file" id="avatarFile"
+                                                                accept=".png, .jpg, .jpeg" path="avatarFile" />
+                                                        </div>
+                                                    </div>
                                                 </div>
+
                                                 <div class="mb-3">
-                                                    <label for="address" class="form-label">Address</label>
-                                                    <form:input type="text" class="form-control" id="address"
-                                                        path="address" />
+                                                    <img id="avatarPreview" src="" alt="avatar preview"
+                                                        style="max-height: 250px; display: none;">
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="phone" class="form-label">Phone</label>
-                                                    <form:input type="text" class="form-control" id="phone"
-                                                        path="phone" />
-                                                </div>
+
                                                 <button type="submit" class="btn btn-primary">Submit</button>
                                             </form:form>
                                         </div>
@@ -69,7 +122,7 @@
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                     crossorigin="anonymous"></script>
-                <script src="js/scripts.js"></script>
+                <script src="/js/scripts.js"></script>
             </body>
 
             </html>
