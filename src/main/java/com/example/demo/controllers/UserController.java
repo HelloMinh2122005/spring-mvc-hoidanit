@@ -1,10 +1,6 @@
 package com.example.demo.controllers;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.domain.User;
+import com.example.demo.services.UploadService;
 import com.example.demo.services.UserService;
-
-import jakarta.servlet.ServletContext;
 
 // @RestController
 // public class UserController {
@@ -39,14 +34,17 @@ import jakarta.servlet.ServletContext;
 public class UserController {
 
     private final UserService userService;
-    private final ServletContext servletContext;
-
+    private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
+    
     public UserController(
         UserService userService,
-        ServletContext servletContext
+        UploadService uploadService,
+        PasswordEncoder passwordEncoder
     ) {
         this.userService = userService;
-        this.servletContext = servletContext;
+        this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder; 
     }
 
     @GetMapping("/home")
@@ -64,30 +62,13 @@ public class UserController {
     @PostMapping("/admin/user/create")
     public String postAdminUserCreatePage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("dinhminhFile") MultipartFile file) {
         model.addAttribute("message", "Create User Success" + newUser);
-        // this.userService.handleHello(newUser);
-        System.out.println(newUser.getRole());
-        System.out.println(file.getOriginalFilename());
-
-        try {
-            byte[] bytes = file.getBytes();
-            String rootPath = this.servletContext.getRealPath("/resources/images/");
-
-            File dir = new File(rootPath + File.separator + "avatars");
-            if (!dir.exists())
-                dir.mkdirs();
-
-            // Create the file on server
-            File serverFile = new File(dir.getAbsolutePath() + File.separator + 
-                System.currentTimeMillis() + "_" + file.getOriginalFilename());
-
-            BufferedOutputStream stream;
-            stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-            stream.write(bytes);
-            stream.close();
-        } catch (IOException ex) {
-            return "redirect:/admin/user";
-        }
-
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatars");
+        String hashPassword = this.passwordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(hashPassword);
+        newUser.setAvatar(avatar);
+        newUser.setRole(this.userService.getRoleByRoleName(newUser.getRole().getName()));
+        
+        this.userService.handleSaveUser(newUser);
         return "redirect:/admin/user/user-table";
     }
 
